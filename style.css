@@ -66,25 +66,26 @@ let lastResult = "ยังไม่รู้";
 
 // เริ่มระบบ
 async function init() {
+ async function init() {
   try {
-    // โหลดโมเดล
+    console.log("เริ่มโหลดโมเดล...");
+
     model = await tmImage.load(URL + "model.json", URL + "metadata.json");
 
-    // เปิดกล้อง
+    console.log("โหลดโมเดลสำเร็จ");
+
     webcam = new tmImage.Webcam(300, 300, true);
-    await webcam.setup();   // ขอ permission
+
+    await webcam.setup();  // 👈 จุดที่ควรขึ้น popup
     await webcam.play();
 
-    // เอาภาพไปแสดงใน <video>
     document.getElementById("webcam").srcObject = webcam.webcam.stream;
-
-    document.getElementById("result").innerText = "กำลังสแกน...";
 
     loop();
 
   } catch (err) {
-    document.getElementById("result").innerText =
-      "❌ เปิดกล้องหรือโหลดโมเดลไม่ได้\n" + err;
+    console.error(err);
+    alert("ERROR: " + err);
   }
 }
 

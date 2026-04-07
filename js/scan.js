@@ -1,39 +1,26 @@
-console.log("scan.js loaded");
-console.log(typeof tmImage);
-const URL = "./model/";
-
-let model, webcam;
-
 async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
+    try {
+        console.log("Start loading model...");
 
-    model = await tmImage.load(modelURL, metadataURL);
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
 
-    webcam = new tmImage.Webcam(300, 300, true);
-    await webcam.setup();
-    await webcam.play();
+        model = await tmImage.load(modelURL, metadataURL);
 
-    document.getElementById("webcam-container").innerHTML = "";
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
+        console.log("Model loaded");
 
-    window.requestAnimationFrame(loop);
-}
+        webcam = new tmImage.Webcam(300, 300, true);
+        await webcam.setup();
+        await webcam.play();
 
-async function loop() {
-    webcam.update();
-    await predict();
-    window.requestAnimationFrame(loop);
-}
+        console.log("Camera started");
 
-async function predict() {
-    const prediction = await model.predict(webcam.canvas);
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
 
-    prediction.sort((a, b) => b.probability - a.probability);
+        window.requestAnimationFrame(loop);
 
-    const best = prediction[0];
-
-    document.getElementById("result").innerHTML =
-        "Result: " + best.className +
-        " (" + (best.probability * 100).toFixed(2) + "%)";
+    } catch (error) {
+        console.error(error);
+        alert("Error: " + error);
+    }
 }

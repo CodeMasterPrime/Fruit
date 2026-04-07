@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #e8f5e9;
+}
+
+.menu {
+  margin-top: 100px;
+}
+
+button {
+  display: block;
+  margin: 15px auto;
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #4caf50;
+  color: white;
+  width: 200px;
+}

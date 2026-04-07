@@ -1,6 +1,11 @@
 async function init() {
     try {
-        console.log("Start loading model...");
+        console.log("โหลด model...");
+model = await tmImage.load(modelURL, metadataURL);
+console.log("โหลดเสร็จ");
+
+await webcam.setup();
+console.log("เปิดกล้องแล้ว");
 
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";

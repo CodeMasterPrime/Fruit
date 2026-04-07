@@ -1,3 +1,5 @@
+console.log("scan.js loaded");
+console.log(typeof tmImage);
 const URL = "./model/";
 
 let model, webcam;

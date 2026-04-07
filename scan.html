@@ -49,16 +49,15 @@ button {
 <h2>🍎 Fruit Scan</h2>
 <p>ยกผลไม้ขึ้นหน้ากล้องได้เลย</p>
 
-<!-- กล้อง -->
-<video id="webcam" autoplay playsinline width="300" height="300"></video>
-
-<!-- ผลลัพธ์ -->
-<div id="result">กำลังโหลดโมเดล...</div>
-
-<!-- ปุ่มบันทึก -->
-<button onclick="saveHistory()">💾 บันทึกผล</button>
+<video id="cam" autoplay playsinline width="300"></video>
 
 <script>
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream => {
+  document.getElementById("cam").srcObject = stream;
+})
+.catch(err => alert(err));
+</script>
 const URL = "./"; // 🔥 ถ้า model อยู่โฟลเดอร์อื่น เปลี่ยนตรงนี้
 
 let model, webcam;

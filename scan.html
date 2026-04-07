@@ -6,32 +6,30 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image"></script>
-
-<link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body style="text-align:center">
 
 <h2>🍎 Fruit Scan</h2>
 
 <video id="webcam" autoplay playsinline width="300"></video>
-<h3 id="result">กำลังสแกน...</h3>
-
-<button onclick="saveHistory()">💾 Save</button>
+<h3 id="result">กำลังโหลด...</h3>
 
 <script>
-const URL = "./"; // โมเดล
+const URL = "./";
 
 let model, webcam;
-let lastResult = "";
 
 async function init() {
+  // โหลดโมเดล
   model = await tmImage.load(URL + "model.json", URL + "metadata.json");
 
+  // เปิดกล้อง
   webcam = new tmImage.Webcam(300, 300, true);
-  await webcam.setup();
+  await webcam.setup();   // ขอ permission
   await webcam.play();
 
+  // ใส่ stream ลง video
   document.getElementById("webcam").srcObject = webcam.webcam.stream;
 
   loop();
@@ -51,23 +49,8 @@ async function predict() {
     if (p.probability > best.probability) best = p;
   }
 
-  lastResult = best.className;
-
   document.getElementById("result").innerText =
     best.className + " " + (best.probability * 100).toFixed(1) + "%";
-}
-
-// บันทึกประวัติ
-function saveHistory(){
-  let data = JSON.parse(localStorage.getItem("history") || "[]");
-
-  data.push({
-    name: lastResult,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("history", JSON.stringify(data));
-  alert("บันทึกแล้ว");
 }
 
 init();

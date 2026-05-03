@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Calendar</title>
+<link rel="stylesheet" href="theme.css">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Fraunces:wght@600&display=swap");
+
+    :root {
+      --mint-1: #e9fff1;
+      --mint-2: #c8f6da;
+      --mint-3: #86dcae;
+      --leaf: #1f6b3b;
+      --leaf-deep: #0f3d22;
+      --text: #0f2416;
+      --card: rgba(255,255,255,0.85);
+      --stroke: rgba(31,107,59,0.15);
+      --shadow: 0 18px 50px rgba(16,32,20,0.18);
+    }
+
+    body {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,255,255,0.7), transparent 35%),
+        radial-gradient(circle at 85% 18%, rgba(255,214,122,0.4), transparent 30%),
+        linear-gradient(135deg, var(--mint-1), var(--mint-2), var(--mint-3));
+      margin: 0;
+      padding: 22px;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .title h1 {
+      margin: 0;
+      color: var(--leaf-deep);
+      font-family: "Fraunces", serif;
+    }
+
+    .title p {
+      margin: 6px 0 0;
+      color: #3d6b4a;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.9);
+      color: var(--leaf-deep);
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 6px 16px rgba(16,32,20,0.12);
+    }
+
+    .btn:hover { border-color: var(--leaf); color: var(--leaf); }
+
+    .legend-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      margin-bottom: 12px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .legend .produce { background: #66bb6a; }
+    .legend .warning { background: #ffb74d; color: #4a2c00; }
+    .legend .expired { background: #e53935; }
+
+    #calendar {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .fc .fc-toolbar-title {
+      font-family: "Fraunces", serif;
+      color: var(--leaf-deep);
+    }
+
+    .fc .fc-button {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--stroke);
+      color: var(--leaf-deep);
+      border-radius: 999px;
+      padding: 6px 12px;
+      transition: 0.2s;
+    }
+
+    .fc .fc-button:hover {
+      border-color: var(--leaf);
+      color: var(--leaf);
+    }
+
+    .fc .fc-button-primary:not(:disabled).fc-button-active,
+    .fc .fc-button-primary:not(:disabled):active {
+      background: var(--leaf);
+      border-color: var(--leaf);
+      color: #fff;
+    }
+
+    .fc-theme-standard .fc-scrollgrid {
+      border-color: rgba(31,107,59,0.15);
+    }
+
+    .fc .fc-daygrid-day-number {
+      color: #1f6b3b;
+    }
+
+    .fc-tooltip {
+      position: absolute;
+      background: #0f3d22;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      animation: fadeIn 0.25s forwards ease;
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      animation: popIn 0.25s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .closeModal {
+      padding: 8px 14px;
+      background: #66bb6a;
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .closeModal:hover { background: #4caf50; }
+
+    .modal-actions { margin-top: 12px; }
+    @media (max-width: 720px) {
+      .topbar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="btn" onclick="window.location.href='history.html'">⬅ Back to History</button>
+      <div class="title">
+        <h1>Fruit Calendar</h1>
+        <p>See production and expiry timelines at a glance.</p>
+      </div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend">
+        <span class="produce">🌱 Produced</span>
+        <span class="warning">⚠️ Near Expiration (≤ 3 days)</span>
+        <span class="expired">❌ Expired</span>
+      </div>
+    </div>
+
+    <div id="calendar"></div>
+  </div>
+
+  <!-- ✅ Modal popup -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <p><b>Produced:</b> <span id="modalProduced"></span></p>
+      <p><b>Expire:</b> <span id="modalExpire"></span></p>
+      <p><b>Days Left:</b> <span id="modalDaysLeft"></span></p>
+
+      <div class="modal-actions btn-row">
+        <button class="closeModal" onclick="document.getElementById('eventModal').classList.remove('show')">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="calendar.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

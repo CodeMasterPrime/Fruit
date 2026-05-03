@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frugo Account | Register</title>
+<link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <main class="auth-shell split">
+    <section class="hero-panel">
+      <span class="badge">Frugo Account</span>
+      <h1>Create your Frugo profile</h1>
+      <p>Create an offline account for this device.</p>
+      <ul class="hero-list">
+        <li>Username + password login</li>
+        <li>Stored locally on this device</li>
+        <li>Works without internet</li>
+      </ul>
+    </section>
+
+    <section class="auth-card">
+      <div class="auth-header">
+        <h2>Register</h2>
+        <p>Set a username and password.</p>
+      </div>
+
+      <form id="registerForm" class="auth-form">
+        <label>
+          Username
+          <input type="text" id="username" placeholder="yourname" required />
+        </label>
+        <label>
+          Password
+          <input type="password" id="password" placeholder="Minimum 6 characters" required />
+        </label>
+        <label>
+          Confirm password
+          <input type="password" id="confirmPassword" placeholder="Repeat password" required />
+        </label>
+        <button class="btn primary" type="submit">Create account</button>
+        <div id="statusMsg" class="notice" hidden></div>
+      </form>
+
+      <div class="auth-footer">
+        <a href="login.html">Already have an account?</a>
+        <a href="welcome.html">Back to Welcome</a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="register.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

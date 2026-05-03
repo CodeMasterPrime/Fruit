@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frugo 🍏</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 18px 72px;
+  }
+
+  .command {
+    --page-bg: rgba(255, 255, 255, 0.72);
+    --panel-bg: rgba(255, 255, 255, 0.86);
+    --panel-strong: rgba(247, 253, 249, 0.96);
+    --line: rgba(15, 61, 34, 0.1);
+    --soft-line: rgba(15, 61, 34, 0.07);
+    --soft-shadow: 0 22px 48px rgba(17, 43, 27, 0.12);
+    width: min(1280px, 100%);
+    display: grid;
+    gap: clamp(18px, 2.4vw, 28px);
+    position: relative;
+  }
+
+  .command::before,
+  .command::after {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    filter: blur(10px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .command::before {
+    top: -120px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(255, 214, 122, 0.26), transparent 70%);
+  }
+
+  .command::after {
+    bottom: -140px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(134, 220, 174, 0.3), transparent 72%);
+  }
+
+  .shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(18px, 2.4vw, 28px);
+  }
+
+  .section {
+    background: var(--page-bg);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 28px;
+    box-shadow: var(--soft-shadow);
+    backdrop-filter: blur(14px);
+  }
+
+  .top-rail {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .brand-copy {
+    display: grid;
+    gap: 2px;
+  }
+
+  .brand-copy strong {
+    font-size: 1rem;
+    color: var(--leaf-deep);
+    letter-spacing: -0.02em;
+  }
+
+  .brand-copy span {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .rail-link {
+    min-height: 42px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 61, 34, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--leaf-deep);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    box-shadow: 0 8px 20px rgba(17, 43, 27, 0.06);
+  }
+
+  .rail-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(31, 107, 59, 0.18);
+    box-shadow: 0 14px 24px rgba(17, 43, 27, 0.1);
+  }
+
+  .masthead {
+    padding: clamp(26px, 3.2vw, 40px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.98fr);
+    gap: clamp(22px, 3vw, 38px);
+    align-items: center;
+  }
+
+  .masthead-copy {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(15, 61, 34, 0.06);
+    border: 1px solid rgba(15, 61, 34, 0.08);
+    color: var(--leaf);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3fa666, #1f6b3b);
+    box-shadow: 0 0 0 4px rgba(63, 166, 102, 0.12);
+  }
+
+  .masthead h1 {
+    margin: 0;
+    max-width: 11ch;
+    font-family: "Fraunces", serif;
+    font-size: clamp(3rem, 5vw, 5.4rem);
+    line-height: 0.93;
+    letter-spacing: -0.04em;
+    color: var(--leaf-deep);
+  }
+
+  .masthead-intro {
+    max-width: 58ch;
+    font-size: clamp(1rem, 1.55vw, 1.14rem);
+    line-height: 1.68;
+    color: color-mix(in srgb, var(--leaf-deep) 72%, white);
+  }
+
+  .signal-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .signal-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.68);
+    border: 1px solid rgba(15, 61, 34, 0.08);
+    color: var(--leaf-deep);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .signal-pill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(31, 107, 59, 0.68);
+  }
+
+  .masthead-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .cta {
+    min-height: 54px;
+    padding: 16px 28px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #348b53, #1f6b3b);
+    color: #f7fff9;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 16px 32px rgba(31, 107, 59, 0.26);
+    transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  }
+
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 36px rgba(31, 107, 59, 0.28);
+    filter: saturate(1.05);
+  }
+
+  .secondary-link {
+    min-height: 52px;
+    padding: 14px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--leaf-deep);
+    font-weight: 600;
+  }
+
+  .secondary-link.secondary-solid {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 28px rgba(17, 43, 27, 0.08);
+  }
+
+  .tertiary-link {
+    min-height: 44px;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    color: var(--leaf-deep);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .action-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .summary-card,
+  .insight-card,
+  .action-card,
+  .latest-card,
+  .hero-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--soft-line);
+    border-radius: 22px;
+    box-shadow: 0 14px 30px rgba(17, 43, 27, 0.08);
+  }
+
+  .summary-card {
+    padding: 18px 18px 20px;
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 251, 247, 0.88)),
+      var(--panel-bg);
+  }
+
+  .summary-card span {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .summary-card strong {
+    display: block;
+    margin-top: 8px;
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    color: var(--leaf-deep);
+  }
+
+  .summary-card::after {
+    content: attr(data-icon);
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 1rem;
+    opacity: 0.42;
+  }
+
+  .hero-stage {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    min-height: 100%;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: 8% 4% auto auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 214, 122, 0.18), transparent 72%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-primary,
+  .hero-secondary-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-primary {
+    padding: 22px;
+    display: grid;
+    gap: 18px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 250, 246, 0.92)),
+      var(--panel-strong);
+  }
+
+  .hero-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(31, 107, 59, 0.08);
+    color: var(--leaf);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-body {
+    display: grid;
+    gap: 8px;
+  }
+
+  .hero-title {
+    font-family: "Fraunces", serif;
+    font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+    line-height: 1;
+    color: var(--leaf-deep);
+  }
+
+  .hero-text {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .hero-flow {
+    display: grid;
+    gap: 12px;
+  }
+
+  .flow-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(15, 61, 34, 0.06);
+  }
+
+  .flow-row.active {
+    background: linear-gradient(135deg, rgba(234, 252, 240, 0.98), rgba(255, 255, 255, 0.82));
+    border-color: rgba(31, 107, 59, 0.14);
+  }
+
+  .flow-copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  .flow-copy strong {
+    color: var(--leaf-deep);
+    font-size: 0.98rem;
+  }
+
+  .flow-copy span {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .hero-secondary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .hero-quick {
+    min-height: 184px;
+    padding: 18px;
+    display: grid;
+    gap: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .hero-quick:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 30px rgba(17, 43, 27, 0.12);
+    border-color: rgba(31, 107, 59, 0.14);
+  }
+
+  .hero-quick-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .action-strip {
+    padding: clamp(18px, 2.4vw, 24px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .action-card {
+    min-height: 124px;
+    padding: 18px;
+    text-align: left;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .action-card::before {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(31, 107, 59, 0.08);
+    font-size: 1rem;
+  }
+
+  .action-card[data-icon="01"]::before { content: "01"; }
+  .action-card[data-icon="02"]::before { content: "02"; }
+  .action-card[data-icon="03"]::before { content: "03"; }
+  .action-card[data-icon="04"]::before { content: "04"; }
+
+  .action-card img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    justify-self: end;
+    margin-top: -18px;
+    margin-bottom: -6px;
+    filter: drop-shadow(0 10px 18px rgba(17, 43, 27, 0.14));
+  }
+
+  .action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 32px rgba(17, 43, 27, 0.12);
+    border-color: rgba(31, 107, 59, 0.18);
+  }
+
+  .action-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--leaf-deep);
+  }
+
+  .action-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .latest-section {
+    padding: clamp(20px, 2.6vw, 28px);
+    display: grid;
+    gap: 18px;
+  }
+
+  .latest-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .latest-copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  .latest-copy h3 {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    color: var(--leaf-deep);
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+  }
+
+  .latest-copy p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .latest-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .latest-card {
+    padding: 18px;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    display: grid;
+    gap: 14px;
+  }
+
+  .latest-fruit {
+    overflow: hidden;
+  }
+
+  .latest-fruit img {
+    width: 76%;
+    height: 76%;
+    object-fit: contain;
+  }
+
+  .latest-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 34px rgba(17, 43, 27, 0.12);
+    border-color: rgba(31, 107, 59, 0.16);
+  }
+
+  .latest-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .latest-card h4 {
+    margin: 0;
+    color: var(--leaf-deep);
+    font-size: 1.1rem;
+  }
+
+  .latest-empty-state {
+    display: none;
+  }
+
+  .latest-card-body {
+    display: grid;
+    gap: 10px;
+  }
+
+  .latest-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .progress {
+    display: grid;
+    gap: 8px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(15, 61, 34, 0.08);
+    overflow: hidden;
+  }
+
+  .progress-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #348b53, #76c889);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .top-rail,
+    .masthead,
+    .action-strip,
+    .latest-section {
+      animation: fadeRise 520ms ease-out both;
+    }
+
+    .top-rail {
+      animation-delay: 0ms;
+    }
+
+    .action-strip {
+      animation-delay: 70ms;
+    }
+
+    .latest-section {
+      animation-delay: 140ms;
+    }
+  }
+
+  @keyframes fadeRise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 980px) {
+    .top-rail {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .top-nav {
+      justify-content: flex-start;
+    }
+
+    .masthead {
+      grid-template-columns: 1fr;
+    }
+
+    .summary-strip,
+    .hero-secondary-grid,
+    .action-strip,
+    .latest-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    body {
+      padding: 18px 14px 54px;
+    }
+
+    .top-rail,
+    .masthead,
+    .action-strip,
+    .latest-section {
+      border-radius: 22px;
+    }
+
+    .masthead h1 {
+      max-width: 12ch;
+    }
+
+    .masthead-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta,
+    .secondary-link,
+    .tertiary-link {
+      width: 100%;
+    }
+
+    .latest-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-quick {
+      min-height: auto;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="command">
+    <div class="shell">
+      <header class="section top-rail panel">
+        <div class="brand-lockup">
+          <div class="brand-mark fruit-tile sm"><img src="apple(g).png" alt=""></div>
+          <div class="brand-copy">
+            <strong>Frugo</strong>
+            <span>Clean fruit tracking for every home</span>
+          </div>
+        </div>
+        <div class="top-nav" aria-label="Primary routes">
+          <button class="rail-link" data-link="fruits-calculator-ai.html">Scan + Weigh</button>
+          <button class="rail-link" data-link="index.html">Scan Expiry</button>
+          <button class="rail-link" data-link="fridge.html">Smart Fridge</button>
+          <button class="rail-link" data-link="history.html">History</button>
+        </div>
+      </header>
+
+      <section class="section masthead">
+        <div class="masthead-copy">
+          <span class="eyebrow">Premium home inventory</span>
+          <h1>One calm control surface for scanning fruit and catching expiry early.</h1>
+          <p class="masthead-intro">The direction here borrows from premium product sites: strong hierarchy, generous space, and one immediate primary action. Open the app, start scanning, and see risk before produce turns into waste.</p>
+          <div class="signal-row" aria-label="Core product strengths">
+            <span class="signal-pill">Fast scan flow</span>
+            <span class="signal-pill">Expiry visibility</span>
+            <span class="signal-pill">Weight-aware nutrition</span>
+          </div>
+          <div class="masthead-actions">
+            <button class="cta" id="scanBtn">Start Scan + Weigh</button>
+            <button class="secondary-link secondary-solid" id="expiryScanBtn">Scan Expiry Date</button>
+            <button class="tertiary-link" id="viewHistoryBtn">Open full history</button>
+          </div>
+          <p class="action-note">Built for household use first, but simple enough that anyone can understand the flow immediately.</p>
+          <div class="summary-strip">
+            <div class="summary-card" data-icon="Items">
+              <span>Stored items</span>
+              <strong id="sumItems">-</strong>
+            </div>
+            <div class="summary-card" data-icon="Soon">
+              <span>Expiring soon</span>
+              <strong id="sumExpiring">-</strong>
+            </div>
+            <div class="summary-card" data-icon="NDS">
+              <span>Average NDS</span>
+              <strong id="sumNds">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stage">
+          <div class="hero-glow"></div>
+          <article class="hero-panel hero-primary">
+            <div class="hero-panel-head">
+              <span class="hero-kicker">Live workflow</span>
+              <span class="status-chip status-fresh">Ready now</span>
+            </div>
+            <div class="hero-body">
+              <div class="hero-title">Start here</div>
+              <p class="hero-text">The home screen leads with one clean path: scan fruit, read weight, save it, then review anything close to expiry without switching mental context.</p>
+            </div>
+            <div class="hero-flow">
+              <div class="flow-row active">
+                <div class="fruit-tile sm"><img src="orange .png" alt=""></div>
+                <div class="flow-copy">
+                  <strong>Scan + Weigh</strong>
+                  <span>Use the camera and live scale flow when adding fruit into storage.</span>
+                </div>
+              </div>
+              <div class="flow-row">
+                <div class="fruit-tile sm"><img src="banana.png" alt=""></div>
+                <div class="flow-copy">
+                  <strong>Save instantly</strong>
+                  <span>Push each record into history and the fridge view with one action.</span>
+                </div>
+              </div>
+              <div class="flow-row">
+                <div class="fruit-tile sm"><img src="apple(g).png" alt=""></div>
+                <div class="flow-copy">
+                  <strong>Review expiry risk</strong>
+                  <span>Check freshness and urgent items before opening the full detail pages.</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="hero-secondary-grid">
+            <button class="hero-panel hero-quick" data-link="index.html">
+              <div class="hero-quick-head">
+                <div class="fruit-tile sm"><img src="orange .png" alt=""></div>
+                <span class="status-chip status-muted">OCR</span>
+              </div>
+              <strong>Scan expiry date</strong>
+              <p>Jump straight to label scanning when the package date is the fastest source of truth.</p>
+            </button>
+
+            <button class="hero-panel hero-quick" data-link="fridge.html">
+              <div class="hero-quick-head">
+                <div class="fruit-tile sm"><img src="apple(g).png" alt=""></div>
+                <span class="status-chip status-saved">Inventory</span>
+              </div>
+              <strong>Open Smart Fridge</strong>
+              <p>Review stored items, nutrition totals, and freshness without opening separate reports.</p>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section action-strip" aria-label="Primary navigation">
+        <button class="action-card" data-link="index.html" data-icon="01">
+          <img src="orange .png" alt="">
+          <h3>Scan expiry date</h3>
+          <p>Read labels with OCR and save produce with production and expiry dates.</p>
+        </button>
+        <button class="action-card" data-link="fridge.html" data-icon="02">
+          <img src="apple(g).png" alt="">
+          <h3>Smart Fridge</h3>
+          <p>Review stored items, nutrition totals, and freshness at a glance.</p>
+        </button>
+        <button class="action-card" data-link="history.html" data-icon="03">
+          <img src="banana.png" alt="">
+          <h3>History</h3>
+          <p>Inspect saved scans, check freshness trends, and remove outdated records.</p>
+        </button>
+        <button class="action-card" data-link="frugo-ai.html" data-icon="04">
+          <img src="strawberry.png" alt="">
+          <h3>Frugo AI</h3>
+          <p>Ask fruit and nutrition questions without leaving the workspace.</p>
+        </button>
+      </section>
+
+      <section class="section latest-section">
+        <div class="latest-header">
+          <div class="latest-copy">
+            <h3>Latest scans</h3>
+            <p>Recent items stay visible here so expiry risk can be assessed without opening another page.</p>
+          </div>
+          <button class="btn ghost" id="viewHistoryBtnSecondary">View all records</button>
+        </div>
+        <div class="latest-grid" id="latestGrid"></div>
+        <div class="empty-state latest-empty-state" id="latestEmptyState">
+          <div class="empty-state-media" aria-hidden="true">
+            <div class="fruit-tile sm"><img src="apple(g).png" alt=""></div>
+            <div class="fruit-tile sm"><img src="orange .png" alt=""></div>
+            <div class="fruit-tile sm"><img src="banana.png" alt=""></div>
+          </div>
+          <h3>No scans yet</h3>
+          <p>Start with Scan + Weigh to create your first saved item, then use this section to monitor freshness and expiry risk at a glance.</p>
+          <div class="empty-state-actions">
+            <button class="btn primary" id="latestEmptyScanBtn">Start Scan + Weigh</button>
+            <button class="btn ghost" id="latestEmptyExpiryBtn">Scan Expiry Date</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script>
+  const MS_DAY = 1000 * 60 * 60 * 24;
+  const sumItems = document.getElementById("sumItems");
+  const sumExpiring = document.getElementById("sumExpiring");
+  const sumNds = document.getElementById("sumNds");
+  const latestGrid = document.getElementById("latestGrid");
+  const latestEmptyState = document.getElementById("latestEmptyState");
+  const scanBtn = document.getElementById("scanBtn");
+  const expiryScanBtn = document.getElementById("expiryScanBtn");
+  const viewHistoryBtn = document.getElementById("viewHistoryBtn");
+  const viewHistoryBtnSecondary = document.getElementById("viewHistoryBtnSecondary");
+  const latestEmptyScanBtn = document.getElementById("latestEmptyScanBtn");
+  const latestEmptyExpiryBtn = document.getElementById("latestEmptyExpiryBtn");
+
+  function getFruitImage(name) {
+    const key = (name || "").toLowerCase();
+    if (key.includes("apple")) return "apple(g).png";
+    if (key.includes("orange")) return "orange .png";
+    if (key.includes("banana")) return "banana.png";
+    if (key.includes("kiwi")) return "kiwi.png";
+    if (key.includes("watermelon")) return "watermelon.png";
+    if (key.includes("strawberry")) return "strawberry.png";
+    return "apple(r).png";
+  }
+
+  function parseDMY(dateStr) {
+    if (!dateStr || dateStr === "-") return null;
+    const parts = dateStr.split("/");
+    if (parts.length !== 3) return null;
+    const [d, m, y] = parts.map(Number);
+    if (!d || !m || !y) return null;
+    return new Date(y, m - 1, d);
+  }
+
+  function getDecayFactor(item) {
+    const prod = parseDMY(item.dateProduced);
+    const exp = parseDMY(item.expireDate);
+    if (!prod || !exp) return 1;
+    const total = (exp - prod) / MS_DAY;
+    if (total <= 0) return 0;
+    const remaining = (exp - new Date()) / MS_DAY;
+    return Math.max(0, Math.min(1, remaining / total));
+  }
+
+  function getWeightFactor(item) {
+    const w = Number(item.weight_g);
+    return Number.isFinite(w) && w > 0 ? w / 100 : 1;
+  }
+
+  function adjustNutrition(nutrition, factor, weightFactor) {
+    const out = { ...nutrition };
+    const keys = [
+      "Energy_kcal","Carbohydrate_g","Protein_g","Total_Sugar_g","Fiber_g","Fat_g",
+      "Vitamin_A_mg","Vitamin_B6_mg","Vitamin_C_mg","Vitamin_D_mg","Sodium_mg","Potassium_mg"
+    ];
+    keys.forEach(k => {
+      if (typeof out[k] === "number") out[k] = out[k] * factor * (weightFactor || 1);
+    });
+    return out;
+  }
+
+  function calcNDS(n) {
+    const score = (n.Protein_g || 0) + (n.Fiber_g || 0) + (n.Vitamin_C_mg || 0) + (n.Vitamin_A_mg || 0);
+    return score / (n.Energy_kcal || 1);
+  }
+
+  function fmtNum(v) {
+    if (!Number.isFinite(v)) return "0";
+    return (Math.round(v * 100) / 100).toFixed(2);
+  }
+
+  function updateSummary(history) {
+    const stored = history.filter(item => (item.status || "stored") === "stored");
+    let expiring = 0;
+    let ndsSum = 0;
+    let ndsCount = 0;
+
+    stored.forEach(item => {
+      const exp = parseDMY(item.expireDate);
+      const daysLeft = exp ? Math.ceil((exp - new Date()) / MS_DAY) : null;
+      if (daysLeft !== null && daysLeft >= 0 && daysLeft <= 3) expiring += 1;
+      if (item.nutrition && item.nutrition !== "-") {
+        try {
+          const raw = JSON.parse(item.nutrition);
+          const decay = getDecayFactor(item);
+          const weightFactor = getWeightFactor(item);
+          const n = adjustNutrition(raw, decay, weightFactor);
+          ndsSum += calcNDS(n);
+          ndsCount += 1;
+        } catch (e) {}
+      }
+    });
+
+    sumItems.textContent = stored.length;
+    sumExpiring.textContent = expiring;
+    sumNds.textContent = ndsCount ? fmtNum(ndsSum / ndsCount) : "-";
+  }
+
+  function renderLatest(history) {
+    const latest = history.slice(-3).reverse();
+    if (latest.length === 0) {
+      latestEmptyState.style.display = "grid";
+      latestGrid.innerHTML = "";
+      return;
+    }
+    latestEmptyState.style.display = "none";
+    latestGrid.innerHTML = latest.map(item => {
+      const exp = parseDMY(item.expireDate);
+      const daysLeft = exp ? Math.ceil((exp - new Date()) / MS_DAY) : null;
+      const freshness = Math.round(getDecayFactor(item) * 100);
+      const weight = item.weight_g ? `${Number(item.weight_g).toFixed(1)} g` : "100 g";
+      const expiryText = daysLeft === null ? "-" : daysLeft < 0 ? `${Math.abs(daysLeft)} day(s) overdue` : `${daysLeft} day(s) left`;
+      const pillClass = daysLeft === null ? "status-muted" : daysLeft < 0 ? "status-expired" : daysLeft <= 3 ? "status-expiring" : "status-fresh";
+      const pillText = daysLeft === null ? "Tracked" : daysLeft < 0 ? "Expired" : daysLeft <= 3 ? "Expiring" : "Fresh";
+      return `
+        <div class="latest-card" data-link="history.html">
+          <div class="latest-card-head">
+            <div class="latest-fruit fruit-tile sm"><img src="${getFruitImage(item.fruit)}" alt=""></div>
+            <span class="status-chip ${pillClass}">${pillText}</span>
+          </div>
+          <div class="latest-card-body">
+            <h4>${item.fruit || "-"}</h4>
+            <div class="latest-meta-row">
+              <span>${weight}</span>
+              <span>${expiryText}</span>
+            </div>
+            <div class="progress">
+              <div class="progress-track"><span style="width:${Math.max(0, Math.min(100, freshness))}%"></span></div>
+              <div class="progress-label">
+                <span>Freshness</span>
+                <span>${freshness}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function init() {
+    const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
+    updateSummary(history);
+    renderLatest(history);
+  }
+
+  scanBtn.addEventListener("click", () => {
+    scanBtn.classList.add("is-busy");
+    window.navigateWithTransition("fruits-calculator-ai.html");
+  });
+
+  expiryScanBtn.addEventListener("click", () => {
+    expiryScanBtn.classList.add("is-busy");
+    window.navigateWithTransition("index.html");
+  });
+
+  viewHistoryBtn.addEventListener("click", () => {
+    window.navigateWithTransition("history.html");
+  });
+
+  viewHistoryBtnSecondary.addEventListener("click", () => {
+    window.navigateWithTransition("history.html");
+  });
+
+  latestEmptyScanBtn.addEventListener("click", () => {
+    latestEmptyScanBtn.classList.add("is-busy");
+    window.navigateWithTransition("fruits-calculator-ai.html");
+  });
+
+  latestEmptyExpiryBtn.addEventListener("click", () => {
+    latestEmptyExpiryBtn.classList.add("is-busy");
+    window.navigateWithTransition("index.html");
+  });
+
+  document.querySelectorAll(".action-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const link = btn.dataset.link;
+      if (link) window.navigateWithTransition(link);
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const card = e.target.closest(".latest-card");
+    if (card && card.dataset.link) {
+      window.navigateWithTransition(card.dataset.link);
+    }
+  });
+
+  init();
+</script>
+<script type="module" src="auth.js"></script>
+</body>
+</html>

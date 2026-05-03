@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Fridge Nutrition</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="fridge.css">
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="btn ghost" id="backBtn">Back Home</button>
+      <div class="title">
+        <h1>Smart Fridge Nutrition</h1>
+        <p>Advanced nutrition view with weight-aware totals.</p>
+      </div>
+      <div class="top-actions">
+        <button class="btn soft" id="historyBtn">History</button>
+      </div>
+    </div>
+
+    <div class="panel controls">
+      <div class="control-row">
+        <input id="searchInput" type="text" placeholder="Search fruit..." />
+        <select id="statusFilter">
+          <option value="stored" selected>Stored</option>
+          <option value="all">All</option>
+          <option value="consumed">Consumed</option>
+          <option value="wasted">Wasted</option>
+        </select>
+        <select id="sortSelect">
+          <option value="expiry">Sort: Expiry</option>
+          <option value="freshness">Sort: Freshness</option>
+          <option value="weight">Sort: Weight</option>
+          <option value="nds">Sort: NDS</option>
+        </select>
+      </div>
+      <div id="statusText" class="status"></div>
+    </div>
+
+    <div class="summary-strip" id="summaryStrip">
+      <div class="strip-card">
+        <span>Items</span>
+        <strong id="sumItems">-</strong>
+      </div>
+      <div class="strip-card">
+        <span>Stored</span>
+        <strong id="sumStored">-</strong>
+      </div>
+      <div class="strip-card">
+        <span>Expiring ≤3d</span>
+        <strong id="sumExpiring">-</strong>
+      </div>
+    </div>
+
+    <div class="stats-grid" id="summaryGrid">
+      <div class="stat-card">
+        <div class="stat-head"><span>Total Weight</span><div class="stat-icon">⚖️</div></div>
+        <strong id="sumWeight">-</strong>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head"><span>Total Calories</span><div class="stat-icon">🔥</div></div>
+        <strong id="sumCalories">-</strong>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head"><span>Total Protein</span><div class="stat-icon">💪</div></div>
+        <strong id="sumProtein">-</strong>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head"><span>Total Carb</span><div class="stat-icon">⚡</div></div>
+        <strong id="sumCarb">-</strong>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head"><span>Total Fiber</span><div class="stat-icon">🌿</div></div>
+        <strong id="sumFiber">-</strong>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head"><span>Avg NDS</span><div class="stat-icon">⭐</div></div>
+        <strong id="sumNds">-</strong>
+      </div>
+    </div>
+
+    <div id="fridgeGrid" class="grid"></div>
+    <div id="emptyState" class="empty-state fridge-empty" style="display:none;">
+      <div class="empty-state-media" aria-hidden="true">
+        <div class="fruit-tile sm"><img src="apple(g).png" alt=""></div>
+        <div class="fruit-tile sm"><img src="orange .png" alt=""></div>
+        <div class="fruit-tile sm"><img src="banana.png" alt=""></div>
+      </div>
+      <h3>No items in Smart Fridge</h3>
+      <p>Scan and save fruit first, then this dashboard will show totals, freshness, and expiry risk in one place.</p>
+      <div class="empty-state-actions">
+        <button class="btn primary" id="emptyScanBtn">Open Scan + Weigh</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailModal" class="modal">
+    <div class="modal-card">
+      <button id="closeModal" class="modal-close">✕</button>
+      <div class="modal-header">
+        <div class="modal-image" id="detailImage"></div>
+        <div>
+          <h3 id="detailTitle">-</h3>
+          <p id="detailDates" class="muted"></p>
+          <p id="detailStatus" class="muted"></p>
+        </div>
+      </div>
+      <div class="detail-grid" id="detailGrid"></div>
+    </div>
+  </div>
+
+  <script src="fridge.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

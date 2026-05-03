@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frugo Account | Profile</title>
+<link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <main class="auth-shell split">
+    <section class="hero-panel">
+      <span class="badge">Profile</span>
+      <h1>Manage your Frugo profile</h1>
+      <p>Update your display name and check your account status.</p>
+      <ul class="hero-list">
+        <li>View account email and username</li>
+        <li>Update display name instantly</li>
+        <li>Open account settings</li>
+      </ul>
+    </section>
+
+    <section class="auth-card">
+      <div class="auth-header">
+        <h2>Your profile</h2>
+        <p>Account details and quick actions.</p>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-row">
+          <span>Username</span>
+          <span id="usernameValue" class="small">-</span>
+        </div>
+        <div class="profile-row">
+          <span>Display name</span>
+          <span id="nameValue" class="small">-</span>
+        </div>
+      </div>
+
+      <form id="nameForm" class="auth-form" style="margin-top: 16px;">
+        <label>
+          Update display name
+          <input type="text" id="displayName" placeholder="Your name" />
+        </label>
+        <button class="btn primary" type="submit">Save name</button>
+        <div id="statusMsg" class="notice" hidden></div>
+      </form>
+
+      <div class="form-row" style="margin-top: 16px;">
+        <button class="btn secondary" id="settingsBtn" type="button">Account settings</button>
+        <button class="btn ghost" id="signOutBtn" type="button">Sign out</button>
+      </div>
+
+      <div class="auth-footer">
+        <a href="welcome.html">Back to Welcome</a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="profile.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

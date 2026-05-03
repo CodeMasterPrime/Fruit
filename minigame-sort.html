@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freshness Sort</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="minigame-sort.css">
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="btn ghost" id="backBtn">⬅ Back to Games</button>
+      <div class="title">
+        <h1>Freshness Sort</h1>
+        <p>Tap fruits from most fresh to least fresh.</p>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="status">
+        <span id="roundText">Round 1</span>
+        <span id="progressText">0 / 6</span>
+      </div>
+
+      <div id="fruitGrid" class="fruit-grid"></div>
+
+      <div id="message" class="message">Tap the freshest fruit first.</div>
+
+      <div class="actions">
+        <button class="btn primary" id="restartBtn">New Round</button>
+      </div>
+    </div>
+  </div>
+
+<script src="minigame-sort.js"></script>
+<script type="module" src="auth.js"></script>
+</body>
+</html>

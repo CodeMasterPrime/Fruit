@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fruit AI (Offline)</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="fruit-ai.css">
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="btn" onclick="window.location.href='welcome.html'">⬅ Back Home</button>
+      <div class="title">
+        <h1>Fruit AI (Offline)</h1>
+        <p>Train 5 fruit classes in your browser. No server required.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="video-wrap">
+          <video id="video" autoplay playsinline></video>
+          <div id="overlay" class="overlay">Prediction: -</div>
+          <canvas id="heatmap" class="heatmap"></canvas>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="startCam">Start Camera</button>
+          <button class="btn" id="stopCam">Stop</button>
+          <button class="btn primary" id="togglePredict">Live Predict</button>
+        </div>
+        <div class="note">Heatmap shows approximate AI focus. If the same fruit is detected for 3 seconds, weight is estimated and NDS is calculated.</div>
+
+        <div class="sample-grid" id="sampleGrid"></div>
+
+        <div class="note">
+          Workflow: start camera → capture 15–30 samples per class → click Live Predict.
+          Works best with good lighting and a clean background.
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Model & Stats</h3>
+        <div class="stats" id="stats"></div>
+        <div class="auto-card" id="autoCard">
+          <div>
+            <span>Detected Fruit</span>
+            <strong id="autoFruit">-</strong>
+          </div>
+          <div>
+            <span>Estimated Weight</span>
+            <strong id="autoWeight">-</strong>
+          </div>
+          <div>
+            <span>NDS Score</span>
+            <strong id="autoNds">-</strong>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="loadDataset">Load Dataset</button>
+          <button class="btn" id="saveModel">Save Model</button>
+          <button class="btn" id="loadModel">Load Model</button>
+          <button class="btn danger" id="resetModel">Reset</button>
+        </div>
+        <div class="note" id="modelNote"></div>
+      </div>
+    </div>
+  </div>
+
+<canvas id="canvas" width="16" height="16" style="display:none;"></canvas>
+<script src="fruit-ai.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
